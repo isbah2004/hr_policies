@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hr_policies/Utils/utils.dart';
 import 'package:hr_policies/homescreen/home_screen.dart';
 
 class ObscureTextProvider extends ChangeNotifier {
@@ -39,9 +40,8 @@ class LoginProvider extends ChangeNotifier {
       );
     } on FirebaseAuthException catch (e) {
       // Handle login error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Login failed')),
-      );
+      Utils.showMessage(
+          context: context, title: 'Error', message: e.toString());
     } finally {
       setLoading(false);
     }
@@ -77,8 +77,69 @@ class SignUpProvider extends ChangeNotifier {
       );
     } on FirebaseAuthException catch (e) {
       // Handle sign-up error
+      Utils.showMessage(
+          context: context, title: 'Error', message: e.toString());
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  Future<void> resetPassword(
+      {required TextEditingController emailController,
+      required BuildContext context}) async {
+    setLoading(true);
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? 'Sign-up failed')),
+        const SnackBar(
+          content: Text('Password reset link sent to your email.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message ?? 'An error occurred. Please try again.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+}
+
+class ResetProvider extends ChangeNotifier {
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  void setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  Future<void> resetPassword(
+      {required TextEditingController emailController,
+      required BuildContext context}) async {
+    setLoading(true);
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password reset link sent to your email.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message ?? 'An error occurred. Please try again.'),
+          backgroundColor: Colors.red,
+        ),
       );
     } finally {
       setLoading(false);

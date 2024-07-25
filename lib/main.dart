@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:hr_policies/authsetup/login_screen.dart';
 import 'package:hr_policies/firebase_options.dart';
 import 'package:hr_policies/provider/auth_provider.dart';
+import 'package:hr_policies/splashscreen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -21,9 +21,12 @@ void main() async {
       ChangeNotifierProvider(
         create: (context) => SignUpProvider(),
       ),
+      ChangeNotifierProvider(
+        create: (context) => ResetProvider(),
+      ),
     ],
     child: const MaterialApp(
-      home: LoginScreen(),
+      home: SplashScreen(),
     ),
   ));
 }
