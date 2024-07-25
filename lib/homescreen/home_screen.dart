@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SystemNavigator.pop();
       },
       child: Scaffold(
-        appBar: AppBar(
+        appBar: AppBar(automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
             'Documents',
@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           actions: [
-            IconButton(
+            IconButton(color: Colors.black,
               icon: const Icon(
                 Icons.logout_outlined,
                 color: Colors.black,
@@ -169,6 +169,18 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color(0xffffa726),
+          onPressed: () {
+          setState(() {
+            
+          });
+          },
+          child: const Icon(
+            Icons.refresh,
+            color: Colors.black,
+          ),
         ),
         backgroundColor: const Color(0xFFF5F5F5), // Light grey background
       ),
